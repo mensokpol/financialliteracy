@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Финансовая грамотность</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #d1e8d0; /* Пастельный зеленый */
+            padding: 10px;
+            text-align: center;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+        h1, h2, h3 {
+            color: #4caf50; /* Зеленый цвет */
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            background-color: #d1e8d0;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        footer p {
+            margin: 0;
+        }
+        a {
+            color: #4caf50;
+        }
+        .hidden {
+            display: none;
+        }
+        #login-form, #register-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('home')">Главная</a></li>
+                <li><a href="#" onclick="showSection('calculator')">Калькулятор</a></li>
+                <li><a href="#" onclick="showSection('info')">Основы</a></li>
+                <li><a href="#" onclick="showSection('faq')">FAQ</a></li>
+                <li><a href="#" onclick="showSection('login')">Личный кабинет</a></li>
+                <li><a href="#" onclick="showSection('about')">О нас</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hidden">
+        <h1>Добро пожаловать на сайт финансовой грамотности!</h1>
+        <p>Здесь вы можете научиться управлять своими финансами, вести учет доходов и расходов, а также избегать распространенных ошибок.</p>
+    </section>
+
+    <section id="calculator" class="hidden">
+        <h2>Калькулятор оптимальных расходов</h2>
+        <p>Введите свой ежемесячный доход, и мы поможем рассчитать оптимальный бюджет для расходов:</p>
+        <form id="budget-form">
+            <label for="income">Доход (в рублях):</label>
+            <input type="number" id="income" name="income" placeholder="Введите сумму дохода" required>
+            <label for="expense">Рекомендуемые расходы (20% дохода):</label>
+            <input type="number" id="expense" name="expense" readonly>
+            <button type="submit">Рассчитать</button>
+        </form>
+        <p>Рекомендуемый процент на расходы составляет 20% от вашего дохода. Вы можете настроить этот процент в будущем.</p>
+    </section>
+
+    <section id="info" class="hidden">
+        <h2>Основы финансовой грамотности</h2>
+        <p>Научитесь управлять своими деньгами с самого начала. Изучите основные понятия: доходы, расходы, сбережения и инвестиции.</p>
+        <p>Для более подробной информации, посетите сайт <a href="https://freedombroker.ru/" target="_blank">Freedom Broker</a>.</p>
+    </section>
+
+    <section id="faq" class="hidden">
+        <h2>Часто задаваемые вопросы</h2>
+        <div>
+            <h3>Что такое финансовая грамотность?</h3>
+            <p>Это умение правильно управлять своими финансами, планировать бюджет, избегать долгов и принимать обоснованные финансовые решения.</p>
+        </div>
+        <div>
+            <h3>Как начать экономить?</h3>
+            <p>Начните с малого: составьте бюджет, отслеживайте свои доходы и расходы, и научитесь откладывать хотя бы небольшую сумму ежемесячно.</p>
+        </div>
+        <div>
+            <h3>Как избежать финансовых проблем?</h3>
+            <p>Будьте осведомлены, создавайте резервные фонды, избегайте излишних долгов и инвестируйте на долгосрочную перспективу.</p>
+        </div>
+    </section>
+
+    <section id="login" class="hidden">
+        <h2>Личный кабинет</h2>
+        <div id="register-form">
+            <h3>Регистрация</h3>
+            <div class="form-section">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" placeholder="Введите имя пользователя">
+            </div>
+            <div class="form-section">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" placeholder="Введите пароль">
+            </div>
+            <div class="form-section">
+                <label for="security-answer">Вопрос для безопасности:</label>
+                <input type="text" id="security-answer" placeholder="Ваш ответ">
+            </div>
+            <button onclick="registerUser()">Зарегистрироваться</button>
+        </div>
+
+        <div id="login-form" class="hidden">
+            <h3>Вход</h3>
+            <div class="form-section">
+                <label for="login-username">Имя пользователя:</label>
+                <input type="text" id="login-username" placeholder="Введите имя пользователя">
+            </div>
+            <div class="form-section">
+                <label for="login-password">Пароль:</label>
+                <input type="password" id="login-password" placeholder="Введите пароль">
+            </div>
+            <div class="form-section">
+                <label for="login-security-answer">Ответ на вопрос безопасности:</label>
+                <input type="text" id="login-security-answer" placeholder="Введите ответ">
+            </div>
+            <button onclick="loginUser()">Войти</button>
+        </div>
+    </section>
+
+    <footer id="about" class="hidden">
+        <p>&copy; 2025 Финансовая грамотность | Все права защищены</p>
+    </footer>
+
+    <script>
+        let userDatabase = {};  // Объект для хранения данных пользователей
+
+        // Функция для отображения разделов
+        function showSection(sectionId) {
+            // Скрыть все секции
+            let sections = document.querySelectorAll('section');
+            sections.forEach(function(section) {
+                section.classList.add('hidden');
+            });
+            // Показать нужную секцию
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        // Функция регистрации пользователя
+        function registerUser() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const securityAnswer = document.getElementById('security-answer').value;
+
+            if (username && password && securityAnswer) {
+                userDatabase[username] = { password, securityAnswer };
+                alert('Регистрация успешна! Теперь вы можете войти.');
+                document.getElementById('register-form').classList.add('hidden');
+                document.getElementById('login-form').classList.remove('hidden');
+            } else {
+                alert('Пожалуйста, заполните все поля.');
+            }
+        }
+
+        // Функция входа пользователя
+        function loginUser() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const securityAnswer = document.getElementById('login-security-answer').value;
+
+            if (userDatabase[username] && 
+                userDatabase[username].password === password && 
+                userDatabase[username].securityAnswer === securityAnswer) {
+                alert('Вход успешен!');
+            } else {
+                alert('Неверные данные для входа.');
+            }
+        }
+    </script>
+</body>
+</html>
+
+

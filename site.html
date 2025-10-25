@@ -13,8 +13,8 @@
             padding: 0;
         }
         header {
-            background-color: #d1e8d0; /* Пастельный зеленый */
-            padding: 10px;
+            background-color: #d1e8d0;
+            padding: 15px;
             text-align: center;
         }
         nav ul {
@@ -38,7 +38,7 @@
             border-radius: 8px;
         }
         h1, h2, h3 {
-            color: #4caf50; /* Зеленый цвет */
+            color: #4caf50;
         }
         button {
             background-color: #4caf50;
@@ -52,7 +52,7 @@
         button:hover {
             background-color: #45a049;
         }
-        input, textarea {
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -70,31 +70,47 @@
         footer p {
             margin: 0;
         }
-        a {
-            color: #4caf50;
-        }
         .hidden {
             display: none;
         }
-        #login-form, #register-form {
-            max-width: 400px;
-            margin: 0 auto;
+        .calendar-section {
+            margin-top: 20px;
         }
-        .form-section {
-            margin-bottom: 20px;
+        .week-info, .test-section {
+            margin-top: 20px;
+        }
+        .test-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
+<script>
+!function(){
+const b=document.createElement("script");
+b.src="https://functions.iiagent.pro/api/v1.0/get_dialog_ai_widget_api?record_id=recnDyoI1sGdriNQp&promt_id=42466&lang=ru&fullscreen=0&voice=1&file=1";
+b.setAttribute("allow","autoplay");
+document.head.appendChild(b);
+}();</script>
+
     <header>
         <nav>
             <ul>
                 <li><a href="#" onclick="showSection('home')">Главная</a></li>
+                <li><a href="#" onclick="showSection('calendar')">Календарь обучения</a></li>
                 <li><a href="#" onclick="showSection('calculator')">Калькулятор</a></li>
                 <li><a href="#" onclick="showSection('info')">Основы</a></li>
                 <li><a href="#" onclick="showSection('faq')">FAQ</a></li>
                 <li><a href="#" onclick="showSection('login')">Личный кабинет</a></li>
-                <li><a href="#" onclick="showSection('about')">О нас</a></li>
             </ul>
         </nav>
     </header>
@@ -104,126 +120,243 @@
         <p>Здесь вы можете научиться управлять своими финансами, вести учет доходов и расходов, а также избегать распространенных ошибок.</p>
     </section>
 
+    <section id="calendar" class="hidden">
+        <h2>Календарь обучения</h2>
+        <div id="week-info">
+            <h3>Неделя 1 - Введение в финансовую грамотность</h3>
+            <p>На первой неделе вы познакомитесь с основами финансов, научитесь различать доходы и расходы и узнаете, как составить личный бюджет.</p>
+        </div>
+        <div class="test-section">
+            <h3>Тест на завершение недели</h3>
+            <form id="test-week1">
+                <label for="q1">Что из перечисленного является расходом?</label>
+                <select id="q1" required>
+                    <option value="">Выберите вариант</option>
+                    <option value="1">Заработная плата</option>
+                    <option value="2">Купленные продукты</option>
+                    <option value="3">Доход от аренды</option>
+                </select>
+                <button type="button" class="test-button" onclick="checkTestWeek1()">Ответить</button>
+            </form>
+        </div>
+    </section>
+
     <section id="calculator" class="hidden">
-        <h2>Калькулятор оптимальных расходов</h2>
-        <p>Введите свой ежемесячный доход, и мы поможем рассчитать оптимальный бюджет для расходов:</p>
-        <form id="budget-form">
-            <label for="income">Доход (в рублях):</label>
-            <input type="number" id="income" name="income" placeholder="Введите сумму дохода" required>
-            <label for="expense">Рекомендуемые расходы (20% дохода):</label>
-            <input type="number" id="expense" name="expense" readonly>
-            <button type="submit">Рассчитать</button>
+        <h2>Калькулятор доходов и расходов</h2>
+        <p>Введите свои доходы и расходы, чтобы рассчитать, сколько можно потратить на нужды, сбережения и т.д.</p>
+
+        <form id="calculator-form">
+            <label for="income">Ваши доходы:</label>
+            <input type="number" id="income" placeholder="Введите сумму доходов" required>
+
+            <label for="expenses">Ваши расходы:</label>
+            <input type="number" id="expenses" placeholder="Введите сумму расходов" required>
+
+            <label for="saving">Сбережения (в % от дохода):</label>
+            <input type="number" id="saving" value="20" max="100" min="0" required>
+
+            <button type="button" class="test-button" onclick="calculateBalance()">Рассчитать</button>
         </form>
-        <p>Рекомендуемый процент на расходы составляет 20% от вашего дохода. Вы можете настроить этот процент в будущем.</p>
+
+        <div id="calculation-result" class="hidden">
+            <h3>Результат:</h3>
+            <p id="balance-text"></p>
+        </div>
     </section>
 
     <section id="info" class="hidden">
         <h2>Основы финансовой грамотности</h2>
-        <p>Научитесь управлять своими деньгами с самого начала. Изучите основные понятия: доходы, расходы, сбережения и инвестиции.</p>
-        <p>Для более подробной информации, посетите сайт <a href="https://freedombroker.ru/" target="_blank">Freedom Broker</a>.</p>
+        <p>Финансовая грамотность — это умение правильно распоряжаться своими деньгами, составлять и контролировать бюджет, откладывать средства на будущее и избегать долговых ловушек. Это важная навыка, которая помогает вам управлять своими средствами эффективно.</p>
+        <h3>Что важно для финансовой грамотности?</h3>
+        <ul>
+            <li><strong>Понимание, как работает доход и расход.</strong> Четкое различие между доходами и расходами — это основа для составления бюджета и контроля финансов.</li>
+            <li><strong>Умение составлять бюджет и планировать.</strong> Создание бюджета помогает вам отслеживать расходы и определять, сколько можно откладывать или инвестировать.</li>
+            <li><strong>Принципы сбережений и инвестирования.</strong> Сбережения позволяют вам создать "подушку безопасности", а инвестиции помогают увеличить ваши активы.</li>
+            <li><strong>Управление долгами и кредиты.</strong> Важно понимать, как работают кредиты и как избежать долговых ловушек, минимизируя проценты.</li>
+        </ul>
     </section>
 
     <section id="faq" class="hidden">
-        <h2>Часто задаваемые вопросы</h2>
-        <div>
-            <h3>Что такое финансовая грамотность?</h3>
-            <p>Это умение правильно управлять своими финансами, планировать бюджет, избегать долгов и принимать обоснованные финансовые решения.</p>
-        </div>
-        <div>
-            <h3>Как начать экономить?</h3>
-            <p>Начните с малого: составьте бюджет, отслеживайте свои доходы и расходы, и научитесь откладывать хотя бы небольшую сумму ежемесячно.</p>
-        </div>
-        <div>
-            <h3>Как избежать финансовых проблем?</h3>
-            <p>Будьте осведомлены, создавайте резервные фонды, избегайте излишних долгов и инвестируйте на долгосрочную перспективу.</p>
-        </div>
+        <h2>Часто задаваемые вопросы (FAQ)</h2>
+        <h3>1. Что такое финансовая грамотность?
+
+Ответ: Финансовая грамотность — это способность эффективно управлять своими деньгами. Она включает в себя понимание того, как планировать бюджет, инвестировать, экономить, а также управлять долгами и рисками. Важными аспектами являются умение принимать обоснованные финансовые решения и осознание последствий этих решений.
+
+2. Почему важна финансовая грамотность?
+
+Ответ: Финансовая грамотность помогает человеку не только справляться с ежедневными финансовыми задачами (планирование бюджета, погашение долгов), но и строить долгосрочные финансовые цели (например, пенсионные накопления, инвестиции). Это основа для финансовой стабильности и уверенности в будущем.
+
+3. Как начать изучать финансовую грамотность?
+
+Ответ: Начать стоит с базовых понятий: составление бюджета, работа с долгами, основах инвестирования. Читайте книги, посещайте онлайн-курсы или смотрите видеоуроки. Также полезно практиковать ведение собственного бюджета, чтобы лучше понять, как деньги движутся в вашей жизни.
+
+4. Что такое личный бюджет и как его составить?
+
+Ответ: Личный бюджет — это план распределения всех ваших доходов и расходов. Чтобы составить бюджет, нужно:
+
+Учесть все источники дохода.
+
+Разделить расходы на обязательные (жилищные, коммунальные, кредиты) и необязательные (развлечения, покупки).
+
+Регулярно следить за отклонениями от плана и корректировать бюджет.
+
+5. Как избавиться от долгов?
+
+Ответ: Для начала важно составить список всех долгов с указанием суммы, процентной ставки и сроков погашения. Используйте стратегию "снежного кома" (погашение самых маленьких долгов) или "лавины" (погашение долгов с самой высокой процентной ставкой). Также рассмотрите возможность консолидации долгов или рефинансирования.
+
+6. Что такое кредит и как им правильно пользоваться?
+
+Ответ: Кредит — это заём денег, который необходимо вернуть с процентами в установленный срок. Важно понимать условия кредита, такие как процентная ставка и дополнительные комиссии. Использовать кредит нужно осторожно, всегда рассчитывая, сможете ли вы вовремя его погасить. Лучше брать кредиты только на нужды, которые принесут выгоду в будущем (например, образование, жильё, развитие бизнеса).
+
+7. Что такое инвестиции и как начать инвестировать?
+
+Ответ: Инвестиции — это вложения денег с целью получения прибыли. Инвестировать можно в акции, облигации, недвижимость, стартапы и другие активы. Начинать лучше с изучения основ, выбора подходящих инструментов (например, акций или фондов) и диверсификации (распределение средств по различным активам для минимизации рисков). Для начинающих можно начать с индексных фондов или ETF.
+
+8. Что такое финансовая подушка безопасности и сколько она должна составлять?
+
+Ответ: Финансовая подушка безопасности — это сбережения, которые обеспечивают вам финансовую защиту на случай непредвиденных обстоятельств (болезнь, потеря работы, аварии). Рекомендуется иметь сумму, равную хотя бы 3-6 месяцам ваших обязательных расходов.
+
+9. Что такое пенсионные накопления и как начать откладывать на пенсию?
+
+Ответ: Пенсионные накопления — это деньги, которые откладываются на будущее, чтобы обеспечить себе комфортную старость. Начать откладывать можно с малого, регулярно переводя часть дохода на специальный пенсионный счёт или участвуя в государственных и частных пенсионных программах. Чем раньше начать откладывать, тем больше у вас будет на пенсии благодаря сложному проценту.
+
+10. Как избегать финансовых ошибок?
+
+Ответ: Чтобы избежать ошибок, нужно:
+
+Понимать, куда уходят ваши деньги, и быть честным с собой о своих финансовых привычках.
+
+Изучать и понимать условия финансовых продуктов (кредиты, страхование, инвестиции).
+
+Развивать самодисциплину и избегать импульсивных покупок.
+
+Планировать долгосрочные финансовые цели и регулярно пересматривать их.
+
+Основы финансовой грамотности:
+
+Бюджетирование: Основная цель — научиться планировать свои доходы и расходы. Это помогает контролировать финансовую ситуацию и избегать долгов.
+
+Оценка и управление долгами: Важно понимать, как долг влияет на вашу финансовую картину. Следует избегать ненужных долгов и быстро погашать те, которые у вас уже есть.
+
+Инвестирование: Для обеспечения финансовой независимости в будущем важно изучить принципы инвестирования и разрабатывать стратегию на основе вашего риска.
+
+Страхование: Страхование защищает вас от финансовых рисков (например, болезни или потери работы). Разбирайтесь в различных видах страховок и выбирайте те, которые важны для вашего благополучия.
+
+Финансовое планирование: Для достижения долгосрочных целей важно составить финансовый план, который включает как краткосрочные, так и долгосрочные цели.
+
+Управление рисками: Понимание того, как избежать финансовых потерь, и использование страховок или диверсификации — ключевые моменты финансовой грамотности.
+
+Кредитование: Знание того, как работать с кредитами, как их правильно использовать и какие условия важно учитывать, поможет избежать долговых ловушек. </h3>
     </section>
 
     <section id="login" class="hidden">
         <h2>Личный кабинет</h2>
-        <div id="register-form">
+        <div class="registration-section">
             <h3>Регистрация</h3>
-            <div class="form-section">
-                <label for="username">Имя пользователя:</label>
-                <input type="text" id="username" placeholder="Введите имя пользователя">
-            </div>
-            <div class="form-section">
+            <form id="registration-form">
+                <label for="username">Логин:</label>
+                <input type="text" id="username" name="username" required>
                 <label for="password">Пароль:</label>
-                <input type="password" id="password" placeholder="Введите пароль">
-            </div>
-            <div class="form-section">
-                <label for="security-answer">Вопрос для безопасности:</label>
-                <input type="text" id="security-answer" placeholder="Ваш ответ">
-            </div>
-            <button onclick="registerUser()">Зарегистрироваться</button>
+                <input type="password" id="password" name="password" required>
+                <button type="button" onclick="registerUser()">Зарегистрироваться</button>
+            </form>
         </div>
 
-        <div id="login-form" class="hidden">
+        <div class="login-section">
             <h3>Вход</h3>
-            <div class="form-section">
-                <label for="login-username">Имя пользователя:</label>
-                <input type="text" id="login-username" placeholder="Введите имя пользователя">
-            </div>
-            <div class="form-section">
+            <form id="login-form">
+                <label for="login-username">Логин:</label>
+                <input type="text" id="login-username" name="login-username" required>
                 <label for="login-password">Пароль:</label>
-                <input type="password" id="login-password" placeholder="Введите пароль">
-            </div>
-            <div class="form-section">
-                <label for="login-security-answer">Ответ на вопрос безопасности:</label>
-                <input type="text" id="login-security-answer" placeholder="Введите ответ">
-            </div>
-            <button onclick="loginUser()">Войти</button>
+                <input type="password" id="login-password" name="login-password" required>
+                <button type="button" onclick="loginUser()">Войти</button>
+            </form>
+        </div>
+        <div id="user-info" class="hidden">
+            <h3>Добро пожаловать, <span id="user-name"></span></h3>
+            <p>Ваши ответы на вопросы безопасности:</p>
+            <ul id="security-answers"></ul>
         </div>
     </section>
 
-    <footer id="about" class="hidden">
+    <footer>
         <p>&copy; 2025 Финансовая грамотность | Все права защищены</p>
     </footer>
 
     <script>
-        let userDatabase = {};  // Объект для хранения данных пользователей
+        // JavaScript код для обработки калькулятора
+        function calculateBalance() {
+            var income = parseFloat(document.getElementById('income').value);
+            var expenses = parseFloat(document.getElementById('expenses').value);
+            var saving = parseFloat(document.getElementById('saving').value);
 
-        // Функция для отображения разделов
-        function showSection(sectionId) {
-            // Скрыть все секции
-            let sections = document.querySelectorAll('section');
+            if (isNaN(income) || isNaN(expenses) || isNaN(saving)) {
+                alert("Пожалуйста, заполните все поля.");
+                return;
+            }
+
+            var savingsAmount = (income * saving) / 100;
+            var availableForSpending = income - savingsAmount - expenses;
+
+            var resultText = `
+                Ваши доходы: ${income} <br>
+                Ваши расходы: ${expenses} <br>
+                Рекомендуемые сбережения: ${savingsAmount} (по ${saving}% от дохода) <br>
+                Доступно для расходования: ${availableForSpending}
+            `;
+
+            document.getElementById('calculation-result').classList.remove('hidden');
+            document.getElementById('balance-text').innerHTML = resultText;
+        }
+
+        // Динамическое отображение секций
+        function showSection(id) {
+            var sections = document.querySelectorAll('section');
             sections.forEach(function(section) {
                 section.classList.add('hidden');
             });
-            // Показать нужную секцию
-            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(id).classList.remove('hidden');
         }
 
-        // Функция регистрации пользователя
-        function registerUser() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const securityAnswer = document.getElementById('security-answer').value;
-
-            if (username && password && securityAnswer) {
-                userDatabase[username] = { password, securityAnswer };
-                alert('Регистрация успешна! Теперь вы можете войти.');
-                document.getElementById('register-form').classList.add('hidden');
-                document.getElementById('login-form').classList.remove('hidden');
+        // Для теста на завершение недели
+        function checkTestWeek1() {
+            var answer = document.getElementById('q1').value;
+            if (answer === '2') {
+                alert("Правильный ответ!");
+                showSection('calendar');
             } else {
-                alert('Пожалуйста, заполните все поля.');
+                alert("Неправильный ответ. Попробуйте снова.");
             }
         }
 
-        // Функция входа пользователя
+        // Переход на страницу личного кабинета, если пользователь зарегистрирован
         function loginUser() {
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            const securityAnswer = document.getElementById('login-security-answer').value;
+            var username = document.getElementById('login-username').value;
+            var password = document.getElementById('login-password').value;
 
-            if (userDatabase[username] && 
-                userDatabase[username].password === password && 
-                userDatabase[username].securityAnswer === securityAnswer) {
-                alert('Вход успешен!');
+            if (username && password) {
+                document.getElementById('user-name').innerText = username;
+                showSection('user-info');
             } else {
-                alert('Неверные данные для входа.');
+                alert("Пожалуйста, введите логин и пароль.");
             }
         }
+
+        // Регистрация нового пользователя
+        function registerUser() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            if (username && password) {
+                alert("Регистрация успешна. Вы можете войти в свой аккаунт.");
+                showSection('login');
+            } else {
+                alert("Пожалуйста, заполните все поля.");
+            }
+        }
+
+        // Изначально показываем главную страницу
+        showSection('home');
     </script>
 </body>
 </html>
